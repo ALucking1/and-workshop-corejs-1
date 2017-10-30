@@ -87,11 +87,11 @@ let i = 'global';
 console.log(this.x); // "global"
 console.log(this.i); // undefined
 
-/* In ECMAScript 2015, let bindings are not subject to Variable Hoisting, which means that let declarations do not move 
-   to the top of the current execution context.  
-   Referencing the variable in the block before the initialization results in a ReferenceError (contrary to a variable declared with var, 
-   which will just have the undefined value). 
-   The variable is in a "temporal dead zone" from the start of the block until the initialization is processed. 
+/* In ECMAScript 2015, let bindings are not subject to Variable Hoisting, which means that let declarations do not move
+   to the top of the current execution context.
+   Referencing the variable in the block before the initialization results in a ReferenceError (contrary to a variable declared with var,
+   which will just have the undefined value).
+   The variable is in a "temporal dead zone" from the start of the block until the initialization is processed.
 */
 
 function varTest() {
@@ -129,7 +129,7 @@ switch (j) {
     break;
 
   case 1:
-    let foo; // SyntaxError for redeclaration.
+    let bar; // SyntaxError for redeclaration. // variable name changed from foo to bar
     break;
 }
 
@@ -172,23 +172,23 @@ console.log(b); // 2
 const MY_FAV = 7;
 
 // this will throw an error - Uncaught TypeError: Assignment to constant variable.
-MY_FAV = 20;
+MY_FAV; //remove = 20 and just called the const instead.
 
 // MY_FAV is 7
 console.log('my favorite number is: ' + MY_FAV);
 
 // trying to redeclare a constant throws an error -  Uncaught SyntaxError: Identifier 'MY_FAV' has already been declared
-const MY_FAV = 20;
+const MY_FAV_2 = 20; //changed to MY_FAV_2 from MY_FAV as already declared on line 172
 
 // the name MY_FAV is reserved for constant above, so this will fail too
-var MY_FAV = 20;
+// var MY_FAV = 20; commented out as already declared on line 181
 
 // this throws an error too
-let MY_FAV = 20;
+// let MY_FAV = 20; commented out as already declared on line 181
 
 // it's important to note the nature of block scoping
-if (MY_FAV === 7) { 
-    // this is fine and creates a block scoped MY_FAV variable 
+if (MY_FAV === 7) {
+    // this is fine and creates a block scoped MY_FAV variable
     // (works equally well with let to declare a block scoped non const variable)
     let MY_FAV = 20;
 
@@ -196,20 +196,20 @@ if (MY_FAV === 7) {
     console.log('my favorite number is ' + MY_FAV);
 
     // this gets hoisted into the global context and throws an error
-    var MY_FAV = 20;
+    var My_Fav = 20; //remove const and capitalisation - becomes different to const MY_FAV
 }
 
 // MY_FAV is still 7
 console.log('my favorite number is ' + MY_FAV);
 
 // throws an error - Uncaught SyntaxError: Missing initializer in const declaration
-const FOO; 
+const FOO = 'BAR'; //missing initializer provided - const needs initialising value
 
 // const also works on objects
 const MY_OBJECT = {'key': 'value'};
 
 // Attempting to overwrite the object throws an error - Uncaught TypeError: Assignment to constant variable.
-MY_OBJECT = {'OTHER_KEY': 'value'};
+// MY_OBJECT = {'OTHER_KEY': 'value'}; commented out as cannot reassign const
 
 // However, object keys are not protected,
 // so the following statement is executed without problem
@@ -220,4 +220,4 @@ const MY_ARRAY = [];
 // It's possible to push items into the array
 MY_ARRAY.push('A'); // ["A"]
 // However, assigning a new array to the variable throws an error - Uncaught TypeError: Assignment to constant variable.
-MY_ARRAY = ['B'];
+// MY_ARRAY = ['B']; commented out as cannot assign new array to existing const.
