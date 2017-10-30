@@ -5,9 +5,9 @@ describe('About Higher Order Functions', function() {
       return x % 2 !== 0;
     });
 
-    expect(odd).toEqual(/* 🤔 */);
-    expect(odd.length).toBe(/* 🤔 */);
-    expect(numbers.length).toBe(/* 🤔 */);
+    expect(odd).toEqual([1, 3]);
+    expect(odd.length).toBe(2);
+    expect(numbers.length).toBe(3);
   });
 
   it("should use 'map' to transform each element", function() {
@@ -16,22 +16,18 @@ describe('About Higher Order Functions', function() {
       return x + 1;
     });
 
-    expect(numbersPlus1).toEqual(/* 🤔 */);
-    expect(numbers).toEqual(/* 🤔 */);
+    expect(numbersPlus1).toEqual([2, 3, 4]);
+    expect(numbers).toEqual([1, 2, 3]);
   });
 
   it("should use 'reduce' to update the same result on each iteration", function() {
     const numbers = [1, 2, 3];
-    const reduction = numbers.reduce(function(
-      /* result from last call */ memo,
-      /* current */ x
-    ) {
+    const reduction = numbers.reduce(function(memo, x) {
       return memo + x;
-    },
-    /* initial */ 0);
+    }, 0);
 
-    expect(reduction).toBe(/* 🤔 */);
-    expect(numbers).toEqual(/* 🤔 */);
+    expect(reduction).toBe(6);
+    expect(numbers).toEqual([1, 2, 3]);
   });
 
   it("should use 'forEach' for simple iteration", function() {
