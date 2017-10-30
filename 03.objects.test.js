@@ -6,9 +6,9 @@ test('property access', () => {
     age: '35'
   };
 
-  expect(/* 🤔 */).toBe('Julian');
-  expect(/* 🤔 */).toBe('Brown');
-  expect(/* 🤔 */).toBe(35);
+  expect(obj.name).toBe('Julian');
+  expect(obj.lastname).toBe('Brown');
+  expect(obj.age).toBe('35');
 });
 
 test('key access', () => {
@@ -19,15 +19,26 @@ test('key access', () => {
     age: '35'
   };
 
-  expect(/* 🤔 */).toBe('Julian');
-  expect(/* 🤔 */).toBe('Brown');
-  expect(/* 🤔 */).toBe(35);
+  expect(obj['name']).toBe('Julian');
+  expect(obj['lastname']).toBe('Brown');
+  expect(obj['age']).toBe('35');
 });
 
 test('computed property names', () => {
   //RULE: USE computed property names
-  const real = '';
-  const fake = '';
+  const real = 'real_';
+  const fake = 'fake_';
+
+  // const arr = ['f1', 'f2']
+  // const obj = {
+  //  f1: function(){},
+  //  f2: function(){},
+  // }
+  //
+  // arr.forEach((element){
+  //   obj[element]() - works
+  //   obj.element() - doesn't work
+  // })
 
   const vip = {
     real_name: 'Kelly',
@@ -37,11 +48,11 @@ test('computed property names', () => {
     age: '35'
   };
 
-  expect(/* 🤔 */).toBe('Kelly');
-  expect(/* 🤔 */).toBe('White');
-  expect(/* 🤔 */).toBe('Pink');
-  expect(/* 🤔 */).toBe('Venn');
-  expect(/* 🤔 */).toBe(35);
+  expect(vip[real + 'name']).toBe('Kelly');
+  expect(vip[real + 'lastname']).toBe('White');
+  expect(vip[fake + 'name']).toBe('Pink');
+  expect(vip[fake + 'lastname']).toBe('Venn');
+  expect(vip['age']).toBe('35');
 });
 
 test('define object properties', () => {
