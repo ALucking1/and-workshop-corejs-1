@@ -26,23 +26,26 @@ function filter(candidates, filters) {
   let availableImmediately = filters.includes('AVAILABLE_IMMEDIATELY');
   let freshGrad = !availableImmediately && filters.includes('FRESH_GRAD');
 
-  for (var currentCandidate = candidates.length; currentCandidate--; ) {
+  filterCandidates = function(candidate) {
     function currentCandidateHasFilter(filter) {
-      return candidates[currentCandidate].options.includes(filter);
+      return candidate.options.includes(filter);
     }
-    if (candidates[currentCandidate].options && candidates[currentCandidate].options.length > 0) {
+    if (candidate.options && candidate.options.length > 0) {
 
       if(availableImmediately && currentCandidateHasFilter('AVAILABLE_IMMEDIATELY')) {
-        filteredCandidates.unshift(candidates[currentCandidate]);
+        return true;
       } else if (freshGrad && currentCandidateHasFilter('FRESH_GRAD')) {
-        filteredCandidates.unshift(candidates[currentCandidate]);
+        return true;
       }
 
       else if (filters.every(currentCandidateHasFilter)) {
-        filteredCandidates.unshift(candidates[currentCandidate]);
+        return true;
       }
     }
   }
+
+  filteredCandidates = candidates.filter(filterCandidates);
+
   return filteredCandidates;
 }
 
