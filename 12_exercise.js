@@ -16,40 +16,34 @@
  *   happy refactory :)
  */
 
-function filter(data, filters) {
-  var output = [];
-  var availableImmediately = false;
-  var freshGrad = false;
+function filter(candidates, filters) {
+  var filteredCandidates = [];
 
   if (filters.length === 0) {
-    return data;
+    return candidates;
   }
 
-  if (filters.indexOf('AVAILABLE_IMMEDIATELY') !== -1) {
-    availableImmediately = true;
-  } else if (filters.indexOf('FRESH_GRAD') !== -1) {
-    freshGrad = true;
-  }
+  let availableImmediately = filters.includes('AVAILABLE_IMMEDIATELY');
+  let freshGrad = !availableImmediately && filters.includes('FRESH_GRAD');
 
-
-  for (var currentPerson = data.length; currentPerson--; ) {
-    function currentPersonHasFilter(filter) {
-      return data[currentPerson].options.indexOf(filter) !== -1;
+  for (var currentCandidate = candidates.length; currentCandidate--; ) {
+    function currentCandidateHasFilter(filter) {
+      return candidates[currentCandidate].options.includes(filter);
     }
-    if (data[currentPerson].options && data[currentPerson].options.length > 0) {
+    if (candidates[currentCandidate].options && candidates[currentCandidate].options.length > 0) {
 
-      if(availableImmediately && currentPersonHasFilter('AVAILABLE_IMMEDIATELY')) {
-        output.unshift(data[currentPerson]);
-      } else if (freshGrad && currentPersonHasFilter('FRESH_GRAD')) {
-        output.unshift(data[currentPerson]);
+      if(availableImmediately && currentCandidateHasFilter('AVAILABLE_IMMEDIATELY')) {
+        filteredCandidates.unshift(candidates[currentCandidate]);
+      } else if (freshGrad && currentCandidateHasFilter('FRESH_GRAD')) {
+        filteredCandidates.unshift(candidates[currentCandidate]);
       }
 
-      else if (filters.every(currentPersonHasFilter)) {
-        output.unshift(data[currentPerson]);
+      else if (filters.every(currentCandidateHasFilter)) {
+        filteredCandidates.unshift(candidates[currentCandidate]);
       }
     }
   }
-  return output;
+  return filteredCandidates;
 }
 
 module.exports = filter;
