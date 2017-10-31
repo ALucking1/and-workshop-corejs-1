@@ -16,37 +16,29 @@
  *   happy refactory :)
  */
 
+function candidateHasFilter(filter, candidate) {
+  return candidate.options.includes(filter);
+}
+
 function filter(candidates, filters) {
-  var filteredCandidates = [];
+  if (filters.length === 0) return candidates;
 
-  if (filters.length === 0) {
-    return candidates;
-  }
+  const availableImmediately = filters.includes('AVAILABLE_IMMEDIATELY');
+  const freshGrad = !availableImmediately && filters.includes('FRESH_GRAD');
 
-  let availableImmediately = filters.includes('AVAILABLE_IMMEDIATELY');
-  let freshGrad = !availableImmediately && filters.includes('FRESH_GRAD');
-
-  filterCandidates = function(candidate) {
-    function currentCandidateHasFilter(filter) {
-      return candidate.options.includes(filter);
-    }
+  filterCandidates = (candidate) => {
     if (candidate.options && candidate.options.length > 0) {
-
-      if(availableImmediately && currentCandidateHasFilter('AVAILABLE_IMMEDIATELY')) {
+      if(availableImmediately && candidateHasFilter('AVAILABLE_IMMEDIATELY', candidate)) {
         return true;
-      } else if (freshGrad && currentCandidateHasFilter('FRESH_GRAD')) {
-        return true;
-      }
-
-      else if (filters.every(currentCandidateHasFilter)) {
+      } else if (freshGrad && candidateHasFilter('FRESH_GRAD', candidate)) {
         return true;
       }
+
+      return filters.every((filter) => candidateHasFilter(filter, candidate));
     }
   }
 
-  filteredCandidates = candidates.filter(filterCandidates);
-
-  return filteredCandidates;
+  return candidates.filter(filterCandidates);
 }
 
 module.exports = filter;
