@@ -31,22 +31,21 @@ function filter(data, filters) {
     freshGrad = true;
   }
 
+
   for (var currentPerson = data.length; currentPerson--; ) {
+    function currentPersonHasFilter(filter) {
+      return data[currentPerson].options.indexOf(filter) !== -1;
+    }
     if (data[currentPerson].options && data[currentPerson].options.length > 0) {
 
-      if(availableImmediately && data[currentPerson].options.indexOf('AVAILABLE_IMMEDIATELY') !== -1) {
+      if(availableImmediately && currentPersonHasFilter('AVAILABLE_IMMEDIATELY')) {
         output.unshift(data[currentPerson]);
-      } else if (freshGrad && data[currentPerson].options.indexOf('FRESH_GRAD') !== -1) {
+      } else if (freshGrad && currentPersonHasFilter('FRESH_GRAD')) {
         output.unshift(data[currentPerson]);
       }
 
-      else {
-        function currentPersonHasFilter(filter) {
-          return data[currentPerson].options.indexOf(filter) !== -1;
-        }
-        if (filters.every(currentPersonHasFilter)) {
-          output.unshift(data[currentPerson]);
-        }
+      else if (filters.every(currentPersonHasFilter)) {
+        output.unshift(data[currentPerson]);
       }
     }
   }
