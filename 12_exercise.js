@@ -1,68 +1,65 @@
 /**
  *  AVAILABLE FILTERS:
  *  ["AVAILABLE_IMMEDIATELY", "FRESH_GRAD", "JUNIOR", "JAVASCRIPT", "PHP", "AWS", "REACT", "JAVA"]
- *   
+ *
  *  "AVAILABLE_IMMEDIATELY" and "FRESH_GRAD" will override all the other filters if specified
- * 
+ *
  *  if "AVAILABLE_IMMEDIATELY" and "FRESH_GRAD" are both specified as filter, "FRESH_GRAD" will be ignored
- * 
- * 
+ *
+ *
  *  Exercise: refactor this code
  *  - take care of naming variables
  *  - get rid of the 'for loops'
  *  - move it to modern JS!
  *  - oh, there are missing tests/scenario
- *  
+ *
  *   happy refactory :)
  */
 
-function filter(results, filters) {
-  var out = [];
-  var resultsLength = results.length;
-  var filterLength = filters.length;
-  var hasOptions;
+function filter(data, filters) {
+  var output = [];
   var availableImmediately = false;
   var freshGrad = false;
 
-  if (filterLength !== 0) {
-    if (filters.indexOf('AVAILABLE_IMMEDIATELY') !== -1) {
-      availableImmediately = true;
-    } else if (filters.indexOf('FRESH_GRAD') !== -1) {
-      freshGrad = true;
-    }
+  if (filters.length === 0) {
+    return data;
+  }
 
-    for (var i = resultsLength; i--; ) {
-      hasOptions = results[i].options && results[i].options.length > 0; //has.options
+  if (filters.indexOf('AVAILABLE_IMMEDIATELY') !== -1) {
+    availableImmediately = true;
+  } else if (filters.indexOf('FRESH_GRAD') !== -1) {
+    freshGrad = true;
+  }
 
-      if (results[i].options) {
-        for (var k = filterLength; k--; ) {
-          // loop through filters
-          var hasFilter = false;
-          for (var j = results[i].options.length; j--; ) {
-            if (!availableImmediately && !freshGrad) {
-              if (filters[k].indexOf(results[i].options[j]) !== -1) {
-                hasFilter = true;
-              }
-            } else if (
-              availableImmediately &&
-              results[i].options[j] === 'AVAILABLE_IMMEDIATELY'
-            ) {
-              hasFilter = true;
-            } else if (freshGrad && results[i].options[j] === 'FRESH_GRAD') {
+  for (var currentPerson = data.length; currentPerson--; ) {
+    let hasOptions = data[currentPerson].options && data[currentPerson].options.length > 0; //has.options
+
+    if (data[currentPerson].options) {
+      for (var currentFilter = filters.length; currentFilter--; ) {
+        // loop through filters
+        var hasFilter = false;
+        for (var currentOption = data[currentPerson].options.length; currentOption--; ) {
+          if (!availableImmediately && !freshGrad) {
+            if (filters[currentFilter].indexOf(data[currentPerson].options[currentOption]) !== -1) {
               hasFilter = true;
             }
+          } else if (
+            availableImmediately &&
+            data[currentPerson].options[currentOption] === 'AVAILABLE_IMMEDIATELY'
+          ) {
+            hasFilter = true;
+          } else if (freshGrad && data[currentPerson].options[currentOption] === 'FRESH_GRAD') {
+            hasFilter = true;
           }
-          hasOptions = hasOptions && hasFilter;
         }
-      }
-      if (hasOptions) {
-        out.unshift(results[i]);
+        hasOptions = hasOptions && hasFilter;
       }
     }
-  } else {
-    out = results;
+    if (hasOptions) {
+      output.unshift(data[currentPerson]);
+    }
   }
-  return out;
+return output;
 }
 
 module.exports = filter;
