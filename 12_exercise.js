@@ -32,34 +32,25 @@ function filter(data, filters) {
   }
 
   for (var currentPerson = data.length; currentPerson--; ) {
-    let hasOptions = data[currentPerson].options && data[currentPerson].options.length > 0; //has.options
+    if (data[currentPerson].options && data[currentPerson].options.length > 0) {
 
-    if (data[currentPerson].options) {
-      for (var currentFilter = filters.length; currentFilter--; ) {
-        // loop through filters
-        var hasFilter = false;
-        for (var currentOption = data[currentPerson].options.length; currentOption--; ) {
-          if (!availableImmediately && !freshGrad) {
-            if (filters[currentFilter].indexOf(data[currentPerson].options[currentOption]) !== -1) {
-              hasFilter = true;
-            }
-          } else if (
-            availableImmediately &&
-            data[currentPerson].options[currentOption] === 'AVAILABLE_IMMEDIATELY'
-          ) {
-            hasFilter = true;
-          } else if (freshGrad && data[currentPerson].options[currentOption] === 'FRESH_GRAD') {
-            hasFilter = true;
-          }
+      if(availableImmediately && data[currentPerson].options.indexOf('AVAILABLE_IMMEDIATELY') !== -1) {
+        output.unshift(data[currentPerson]);
+      } else if (freshGrad && data[currentPerson].options.indexOf('FRESH_GRAD') !== -1) {
+        output.unshift(data[currentPerson]);
+      }
+
+      else {
+        function currentPersonHasFilter(filter) {
+          return data[currentPerson].options.indexOf(filter) !== -1;
         }
-        hasOptions = hasOptions && hasFilter;
+        if (filters.every(currentPersonHasFilter)) {
+          output.unshift(data[currentPerson]);
+        }
       }
     }
-    if (hasOptions) {
-      output.unshift(data[currentPerson]);
-    }
   }
-return output;
+  return output;
 }
 
 module.exports = filter;
