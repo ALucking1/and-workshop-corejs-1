@@ -21,12 +21,12 @@ function candidateHasFilter(filter, candidate) {
 }
 
 function filter(candidates, filters) {
-  if (filters.length === 0) return candidates;
+  if (!filters.length) return candidates;
 
   const availableImmediately = filters.includes('AVAILABLE_IMMEDIATELY');
   const freshGrad = !availableImmediately && filters.includes('FRESH_GRAD');
 
-  filterCandidates = (candidate) => {
+  const filterCandidates = (candidate) => {
     if (candidate.options && candidate.options.length > 0) {
       if(availableImmediately && candidateHasFilter('AVAILABLE_IMMEDIATELY', candidate)) {
         return true;
