@@ -1,20 +1,16 @@
 
-/* 
-    
+/*
+
     Task 1) Refactor the anAsyncFunction to use shorthand object promise notation
 
 */
 
 const anAsyncFunction = (result) => {
-    return new Promise((resolve, reject) => {
-
         if (result) {
-            return resolve([0, 1, 2]);
+            return Promise.resolve([0, 1, 2]);
         } else {
-            return reject(' Oh no :( ');
+            return Promise.reject(' Oh no :( ');
         }
-
-    })
 };
 
 test('When resolved, the then is called', (done) => {
@@ -36,57 +32,49 @@ test('When rejected, the catch handler is called', (done) => {
 });
 
 
-/* 
-    
+/*
+
     Task 2) Abstract out the .then calls into a separate function, not anonymous
 
-    Think about: 
+    Think about:
         - What happens if you call .then without returning anything?
         - Does a .then have to return a promise? Can it? Try wrapping addOne's function with: Promise.resolve()
 
 */
 
 const addOne = result => result + 1;
+const addTwo = result => result + 2;
 
 test('Add up to 6!', (done) => {
     return Promise.resolve(0)
-        .then((num) => num + 2 )
-        .then((num) => num + 2 )
-        .then((num) => num + 2 )
+        .then(addTwo)
+        .then(addTwo)
+        .then(addTwo)
         .then(function(result){
             expect(result).toBe(6);
         })
         .then(done);
 });
 
-/* 
-    
+/*
+
     Task 3) Refactor to be flat like the one before
 
-*/ 
+*/
 
 
 test('A big old chain of promises', (done) => {
     Promise.resolve(0)
         .then(addOne)
-        .then((value) => {
-            return Promise.resolve(value)
-                .then((value) => {
-                    return Promise.resolve(value)
-                        .then(addOne)
-                        .then(addOne)
-                        .then(addOne)
-                })
-                .then(addOne)
-                .then(addOne)
-        })
         .then(addOne)
-        .then((value) => {
-            return Promise.resolve(value)
-                .then(addOne)
-                .then(addOne)
-                .then(addOne)
-        })
+        .then(addOne)
+        .then(addOne)
+        .then(addOne)
+        .then(addOne)
+        .then(addOne)
+        .then(addOne)
+        .then(addOne)
+        .then(addOne)
         .then((result) => {
             expect(result).toBe(10);
         })
@@ -94,7 +82,7 @@ test('A big old chain of promises', (done) => {
 });
 
 
-/* 
+/*
 
     Task 4) Rewrite to use Promise.all
 
@@ -127,20 +115,20 @@ test('Get Alices plan', (done) => {
     return getUser()
         .then((user) => {
             return getPlans().then((plans) => {
-                return subscribe(user.name, plans.id);      
+                return subscribe(user.name, plans.id);
             })
         })
         .then((string)=> {
             expect(string).toBe('Create the plan called Alice for plan ID 4')
             done();
         });
-    
+
 });
 
 
-/* 
+/*
 
-    Task 5) Promise.all returns an array, but that means we have to access with the gross array[0] syntax. 
+    Task 5) Promise.all returns an array, but that means we have to access with the gross array[0] syntax.
         Rewrite the .then to use the spread operator instead
 */
 
